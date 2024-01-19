@@ -12,7 +12,7 @@ export const fetchData = createAsyncThunk("user/fetchData", async () => {
 });
 
 export const deletedData = createAsyncThunk("user/deletedData", async (id) => {
-  const response = await axios.delete("http://localhost:3030/bye", +id);
+  const response = await axios.delete("http://localhost:3030/bye/", +id);
   return response.data;
 });
 
