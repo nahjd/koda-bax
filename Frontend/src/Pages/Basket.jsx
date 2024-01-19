@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { fetchData, decreaseBasket, increaseBasket, deleteBasket } from '../redux/slice/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from "react-helmet";
+import Button from '@mui/material/Button';
 
 const Basket = () => {
     const basket = useSelector((state) => state.counter.basket);
@@ -16,6 +17,7 @@ const Basket = () => {
     useEffect(() => {
         dispatch(fetchData())
     }, [dispatch])
+    console.log(basket);
 
     return (
         <div>
@@ -37,48 +39,58 @@ const Basket = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {basket && basket.map((row) => (
-                            <TableRow
-                                key={row._id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row.name}
-                                </TableCell>
-                                <TableCell align="right">{row.image}</TableCell>
-                                <TableCell align="right">
-                                    {Number(row.price) * row.quantity}
-                                </TableCell>
-                                <TableCell align="right">{row.carbs}</TableCell>
-                                <TableCell align="right">
-                                    <Button onClick={() => {
-                                        dispatch(increaseBasket(row))
-                                    }}
 
-                                    >
-                                        Increase
-                                    </Button>
-                                </TableCell>
-                                <TableCell align="right">
-                                    <Button onClick={() => {
-                                        dispatch(decreaseBasket(row))
-                                    }}
+                        {basket && basket.map((row) => {
+                            return (
+                                <TableRow
+                                    key={row._id}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {row.name}
+                                    </TableCell>
+                                    <TableCell align="right">{row.image}</TableCell>
+                                    <TableCell align="right">
+                                        {Number(row.price) * row.quantity}
+                                    </TableCell>
+                                    <TableCell align="right">{row.number}</TableCell>
+                                    <TableCell align="right">
+                                        <Button onClick={() => {
+                                            dispatch(increaseBasket(row))
+                                        }}
 
-                                    >
-                                        Decrease
-                                    </Button>
-                                </TableCell>
-                                <TableCell align="right">
-                                    <Button onClick={() => {
-                                        dispatch(deleteBasket(row._id))
-                                    }}
+                                        >
+                                            Increase
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <Button onClick={() => {
+                                            dispatch(decreaseBasket(row))
+                                        }}
 
-                                    >
-                                        Delete
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                        >
+                                            Decrease
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <Button onClick={() => {
+                                            dispatch(deleteBasket(row._id))
+                                        }}
+
+                                        >
+                                            Delete
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        }
+
+
+
+
+                        )}
+
+
                     </TableBody>
                 </Table>
             </TableContainer>

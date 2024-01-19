@@ -1,11 +1,7 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const initialState = {
-  data: [],
-  basket: [],
-  wishlist: [],
-};
+
 export const fetchData = createAsyncThunk("user/fetchData", async () => {
   const response = await axios.get("http://localhost:3030/bye");
   return response.data;
@@ -23,16 +19,20 @@ export const postData = createAsyncThunk("user/postData", async (obj) => {
 
 export const counterSlice = createSlice({
   name: "counter",
-  initialState,
+  initialState: {
+    data: [],
+    basket: [],
+    wishlist: [],
+  },
   reducers: {
     addBasket: (state, action) => {
-      let foundIndex = state.basket.findIndex(
-        (item) => item._id == action.payload._id
-      );
-      if (foundIndex !== -1) {
-        state.basket = current(state.basket).map((item, index) => {
-          index = foundIndex ? { ...item, quantity: item.quantity + 1 } : item;
-        });
+      let found = state.basket.find((item) => {
+        item._id == action.payload._id;
+      });
+      if (found !== -1) {
+        state.basket = current(state.basket).map((item, index) =>
+          index == found ? { ...item, quantity: item.quantity + 1 } : item
+        );
       } else {
         state.basket = [
           ...current(state.basket),
@@ -40,27 +40,24 @@ export const counterSlice = createSlice({
         ];
       }
     },
+
     increaseBasket: (state, action) => {
-      let foundIndex = state.basket.findIndex(
-        (item) => item._id == action.payload._id
-      );
-      state.basket = current(state, basket).map((item, index) => {
-        index = foundIndex ? { ...item, quantity: item.quantity + 1 } : item;
+      let found = state.basket.find((item) => {
+        item._id = action.payload._id;
       });
+      state.basket = current(state.basket).map((item, index) =>
+        index == found ? { ...item, quantity: item.quantity + 1 } : item
+      );
     },
     decreaseBasket: (state, action) => {
-      let foundIndex = state.basket.findIndex(
-        (item) => item._id == action.payload._id
+      let found = state.basket.find((item) => {
+        item._id = action.payload._id;
+      });
+      state.basket = current(state.basket).map((item, index) =>
+        index == found ? { ...item, quantity: item.quantity - 1 } : item
       );
-      state.basket = current(state, basket).map((item, index) => {
-        index = foundIndex ? { ...item, quantity: item.quantity - 1 } : item;
-      });
     },
-    deleteBasket: (state, action) => {
-      state.basket = current(state.basket).filter((item) => {
-        item._id != action.payload;
-      });
-    },
+
     addWishlist: (state, action) => {
       let found = state.wishlist.find((item) => item._id == action.payload._id);
       if (found) {

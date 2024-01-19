@@ -11,12 +11,12 @@ import { Helmet } from "react-helmet";
 
 const Home = () => {
     const data = useSelector((state) => state.counter.data)
-    const wishlist = useSelector((state) => state.counter.wishlist)
+    const basket = useSelector((state) => state.counter.basket)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(fetchData())
     }, [dispatch])
-    console.log(data);
+    console.log(basket);
 
     return (
         <>
